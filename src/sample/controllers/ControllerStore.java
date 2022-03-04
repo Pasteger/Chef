@@ -1,10 +1,5 @@
 package sample.controllers;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +10,12 @@ import javafx.stage.Stage;
 import sample.datebase.DatabaseHandler;
 import sample.datebase.User;
 
-public class ControllerMenuFormation {
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ControllerStore {
     private int expenses = User.getExpenses();
     private int expensesFirstDishes;
     private int expensesSecondDishes;

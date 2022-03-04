@@ -1,10 +1,8 @@
 package sample.controllers;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,20 +15,14 @@ import sample.datebase.DatabaseHandler;
 import sample.datebase.User;
 
 public class ControllerAuthorization {
-    @FXML private ResourceBundle resources;
-    @FXML private URL location;
     @FXML private Button buttonAuthorization;
     @FXML private Button buttonRegistration;
     @FXML private Label errorLabel;
-    @FXML private Label heading;
     @FXML private TextField login;
     @FXML private TextField password;
-    @FXML private Label title;
     @FXML
     void initialize() {
-        buttonRegistration.setOnAction(actionEvent -> {
-            openOtherWindow("/sample/layout/registration.fxml");
-        });
+        buttonRegistration.setOnAction(actionEvent -> openOtherWindow("/sample/layout/registration.fxml"));
 
         buttonAuthorization.setOnAction(actionEvent -> {
             String loginText = login.getText().trim();
@@ -39,6 +31,7 @@ public class ControllerAuthorization {
             if(!loginText.equals("") && !passwordText.equals("")) {
                 try {
                     if(loginUser(loginText, passwordText)) {
+                        User.setAdministrator(new DatabaseHandler().checkingForAnAdministrator());
                         openOtherWindow("/sample/layout/menu_formation.fxml");
                     }
                     else {
@@ -56,8 +49,11 @@ public class ControllerAuthorization {
 
     private boolean loginUser(String login, String password) throws SQLException, ClassNotFoundException {
         DatabaseHandler databaseHandler = new DatabaseHandler();
-        User user = new User(login, password, false);
-        ResultSet resultSet = databaseHandler.signInUser(user);
+        User.setUsername(login);
+        User.setPassword(password);
+        User.setMenu("");
+        User.setExpenses(0);
+        ResultSet resultSet = databaseHandler.signInUser();
         int counter = 0;
         while (resultSet.next()){
             counter++;

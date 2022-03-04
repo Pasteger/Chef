@@ -37,10 +37,12 @@ public class ControllerRegistration {
             String passwordText = password.getText().trim();
 
             if(!loginText.equals("") && !passwordText.equals("")){
-                User user = new User(loginText, passwordText, false);
+                User.setUsername(loginText);
+                User.setPassword(passwordText);
+                User.setAdministrator(false);
 
                 try {
-                    databaseHandler.signUpUser(user);
+                    databaseHandler.signUpUser();
                 } catch (SQLException | ClassNotFoundException throwable) {
                     throwable.printStackTrace();
                 }
