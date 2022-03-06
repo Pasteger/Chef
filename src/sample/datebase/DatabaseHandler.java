@@ -7,7 +7,6 @@ import java.sql.*;
 
 public class DatabaseHandler extends Configs{
     Connection dbConnection;
-    private final ObservableList<UsersData> userObservableList = FXCollections.observableArrayList();
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
         String connectionString = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName;
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -38,8 +37,8 @@ public class DatabaseHandler extends Configs{
         return preparedStatement.executeQuery();
     }
 
-    public Boolean checkingForAnAdministrator() throws SQLException, ClassNotFoundException {
-        String select = "SELECT " + Const.ADMINISTRATORS + " FROM " + Const.USER_TABLE + " WHERE " + Const.USERNAMES + "=\"" + User.getUsername() + "\"";
+    public Boolean checkingForAnAdministrator(String username) throws SQLException, ClassNotFoundException {
+        String select = "SELECT " + Const.ADMINISTRATORS + " FROM " + Const.USER_TABLE + " WHERE " + Const.USERNAMES + "=\"" + username + "\"";
 
         Statement statement = getDbConnection().createStatement();
 
@@ -55,13 +54,39 @@ public class DatabaseHandler extends Configs{
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, User.getUsername());
-        preparedStatement.setString(2, User.getMenu());
+        preparedStatement.setString(2, User.getMenu().toString());
         preparedStatement.setInt(3, User.getExpenses());
 
         preparedStatement.executeUpdate();
     }
 
-    public void returnUsers(String select) throws SQLException, ClassNotFoundException {
+
+
+    public void updateRole(String username, boolean role) throws SQLException, ClassNotFoundException {
+        final int IDU = returnIdUser(username);
+        int roleInt = role ? 0 : 1;
+
+        String select = "UPDATE chef.users SET isadministrator = \"" + roleInt + "\" WHERE idusers = \"" + IDU + "\"";
+        PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
+        preparedStatement.executeUpdate();
+    }
+
+    public void deleteUser(String username) throws SQLException, ClassNotFoundException {
+        final int IDU = returnIdUser(username);
+        String select = "DELETE FROM chef.users WHERE idusers = \"" + IDU + "\"";
+        getDbConnection().prepareStatement(select).executeUpdate();
+    }
+
+    private int returnIdUser(String username) throws SQLException, ClassNotFoundException {
+        String select = "SELECT " + Const.ID_USERS + " FROM " + Const.USER_TABLE + " WHERE " + Const.USERNAMES + "=\"" + username + "\"";
+        Statement statement = getDbConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(select);
+        resultSet.next();
+        return resultSet.getInt(1);
+    }
+
+    public ObservableList<UsersData> returnUsers(String select) throws SQLException, ClassNotFoundException {
+        ObservableList<UsersData> userObservableList = FXCollections.observableArrayList();
         Statement statement = getDbConnection().createStatement();
 
         ResultSet resultSet = statement.executeQuery(select);
@@ -73,6 +98,25 @@ public class DatabaseHandler extends Configs{
 
             userObservableList.add(new UsersData(id, username, password, isAdministrator));
         }
-        UsersOL.setUserObservableList(userObservableList);
+        return userObservableList;
+    }
+
+    public ObservableList<UsersData> returnHistory(String select) throws SQLException, ClassNotFoundException {
+        ObservableList<UsersData> historyObservableList = FXCollections.observableArrayList();
+        Statement statement = getDbConnection().createStatement();
+
+        ResultSet resultSet = statement.executeQuery(select);
+        while (resultSet.next()){
+            String username = resultSet.getString(2);
+            String menu = resultSet.getString(3);
+            int expenses = resultSet.getInt(4);
+
+            historyObservableList.add(new UsersData(username, menu, expenses));
+        }
+        return historyObservableList;
+    }
+
+    public void clearHistoryTable() throws SQLException, ClassNotFoundException {
+        getDbConnection().prepareStatement("TRUNCATE chef.story;").executeUpdate();
     }
 }

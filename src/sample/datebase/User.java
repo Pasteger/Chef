@@ -5,14 +5,14 @@ public class User {
     private static String password;
     private static boolean administrator;
     private static int expenses;
-    private static String menu;
+    private static StringBuilder menu;
 
     public User(String username, String password, boolean administrator) {
         User.username = username;
         User.password = password;
         User.administrator = administrator;
         User.expenses = 0;
-        User.menu = "";
+        User.menu = new StringBuilder();
     }
     public static String getUsername() {return username;}
     public static void setUsername(String username) {User.username = username;}
@@ -22,6 +22,6 @@ public class User {
     public static void setAdministrator(boolean administrator) {User.administrator = administrator;}
     public static int getExpenses() {return expenses;}
     public static void setExpenses(int expenses) {User.expenses = expenses;}
-    public static String getMenu() {return menu;}
-    public static void setMenu(String menu) {User.menu = menu;}
+    public static StringBuilder getMenu() {return menu;}
+    public static void setMenu(StringBuilder menu) {User.menu = menu;}
 }

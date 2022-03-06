@@ -16,7 +16,7 @@ import sample.datebase.DatabaseHandler;
 import sample.datebase.User;
 
 public class ControllerMenuFormation {
-    private int expenses = User.getExpenses();
+    private int expenses;
     private int expensesFirstDishes;
     private int expensesSecondDishes;
     private int expensesThirdDishes;
@@ -27,7 +27,7 @@ public class ControllerMenuFormation {
     private final int priceThirdDishes = 200;
     private final int priceFourthDishes = 150;
     private final int priceFifthDishes = 300;
-    private final StringBuilder menu = new StringBuilder();
+    private StringBuilder menu;
     private boolean firstDishesSet;
     private boolean secondDishesSet;
     private boolean thirdDishesSet;
@@ -59,6 +59,8 @@ public class ControllerMenuFormation {
     @FXML private Button subtractPersonButton;
     @FXML private Button administratorButton;
     @FXML void initialize() {
+        expenses = User.getExpenses();
+        menu = User.getMenu();
         exitButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/authorization.fxml"));
         recipesButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/recipes.fxml"));
         storeButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/store.fxml"));
@@ -446,7 +448,7 @@ public class ControllerMenuFormation {
 
     private void openOtherWindow(String window){
         User.setExpenses(expenses);
-        User.setMenu(menu.toString());
+        User.setMenu(menu);
         if(window.equals("/sample/layout/administrator_room.fxml")){
             if(!User.isAdministrator()){
                 return;

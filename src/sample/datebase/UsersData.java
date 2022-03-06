@@ -13,8 +13,11 @@ public class UsersData {
         this.username = username;
         this.password = password;
         this.administrator = administrator;
-        this.expenses = 0;
-        this.menu = "";
+    }
+    public UsersData(String username, String menu, int expenses){
+        this.username = username;
+        this.menu = menu;
+        this.expenses = expenses;
     }
     public String getUsername() {return username;}
     public void setUsername(String username) {this.username = username;}

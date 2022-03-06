@@ -446,7 +446,7 @@ public class ControllerStore {
 
     private void openOtherWindow(String window){
         User.setExpenses(expenses);
-        User.setMenu(menu.toString());
+        User.setMenu(menu);
         if(window.equals("/sample/layout/administrator_room.fxml")){
             if(!User.isAdministrator()){
                 return;

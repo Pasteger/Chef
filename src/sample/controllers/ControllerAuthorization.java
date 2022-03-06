@@ -31,7 +31,7 @@ public class ControllerAuthorization {
             if(!loginText.equals("") && !passwordText.equals("")) {
                 try {
                     if(loginUser(loginText, passwordText)) {
-                        User.setAdministrator(new DatabaseHandler().checkingForAnAdministrator());
+                        User.setAdministrator(new DatabaseHandler().checkingForAnAdministrator(User.getUsername()));
                         openOtherWindow("/sample/layout/menu_formation.fxml");
                     }
                     else {
@@ -51,7 +51,7 @@ public class ControllerAuthorization {
         DatabaseHandler databaseHandler = new DatabaseHandler();
         User.setUsername(login);
         User.setPassword(password);
-        User.setMenu("");
+        User.setMenu(new StringBuilder());
         User.setExpenses(0);
         ResultSet resultSet = databaseHandler.signInUser();
         int counter = 0;

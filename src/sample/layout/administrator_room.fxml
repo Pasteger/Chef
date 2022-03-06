@@ -25,7 +25,7 @@
             <Font name="Arial" size="8.0" />
          </font>
       </Button>
-      <TableView fx:id="usersTable" layoutX="141.0" layoutY="192.0" prefHeight="329.0" prefWidth="330.0">
+      <TableView fx:id="usersTable" layoutX="150.0" layoutY="192.0" prefHeight="329.0" prefWidth="330.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="20.0" text="ID" />
           <TableColumn fx:id="usernameColumn" prefWidth="102.0" text="Username" />
@@ -33,11 +33,11 @@
             <TableColumn fx:id="isAdministratorColumn" minWidth="0.0" prefWidth="95.0" text="isAdministrator" />
         </columns>
       </TableView>
-      <TableView layoutX="492.0" layoutY="192.0" prefHeight="329.0" prefWidth="294.0">
+      <TableView fx:id="historyTable" layoutX="492.0" layoutY="192.0" prefHeight="329.0" prefWidth="294.0">
          <columns>
-            <TableColumn prefWidth="101.0" text="Пользователь" />
-            <TableColumn prefWidth="103.0" text="Меню" />
-            <TableColumn prefWidth="86.0" text="Стоимость" />
+            <TableColumn fx:id="historyUsername" prefWidth="101.0" text="Пользователь" />
+            <TableColumn fx:id="historyMenu" prefWidth="103.0" text="Меню" />
+            <TableColumn fx:id="historyExpenses" prefWidth="70.0" text="Стоимость" />
          </columns>
       </TableView>
       <TextField fx:id="searchTextField" layoutX="14.0" layoutY="221.0" prefHeight="25.0" prefWidth="125.0" promptText="username" style="-fx-background-color: d7d7d7;">
@@ -50,9 +50,9 @@
             <Font name="Arial" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="assignAnAdministratorButton" layoutX="14.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #e28b00;" text="сделать администратором" textFill="WHITE">
+      <Button fx:id="reverseRoleButton" layoutX="14.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #e28b00;" text="изменить роль" textFill="WHITE">
          <font>
-            <Font name="Arial" size="9.0" />
+            <Font name="Arial" size="13.0" />
          </font>
       </Button>
       <Button fx:id="updateButton" layoutX="14.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #e28b00;" text="обновить" textFill="WHITE">
@@ -60,5 +60,20 @@
             <Font name="Arial" size="11.0" />
          </font>
       </Button>
+      <Button fx:id="banButton" layoutX="14.0" layoutY="324.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #e28b00;" text="удалить" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="clearHistoryButton" layoutX="677.0" layoutY="527.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" style="-fx-background-color: #e28b00;" text="очистить историю" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="11.0" />
+         </font>
+      </Button>
+      <Label fx:id="exceptionLabel" alignment="CENTER" layoutX="14.0" layoutY="357.0" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: f0fff0;" textAlignment="CENTER">
+         <font>
+            <Font name="Arial" size="10.0" />
+         </font>
+      </Label>
    </AnchorPane>
 </AnchorPane>
