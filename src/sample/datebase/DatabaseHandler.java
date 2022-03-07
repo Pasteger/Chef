@@ -119,4 +119,12 @@ public class DatabaseHandler extends Configs{
     public void clearHistoryTable() throws SQLException, ClassNotFoundException {
         getDbConnection().prepareStatement("TRUNCATE chef.story;").executeUpdate();
     }
+
+    public String returnRecipe(String dish) throws SQLException, ClassNotFoundException {
+        Statement statement = getDbConnection().createStatement();
+        String select = "SELECT recipe FROM chef.dishes WHERE dish = \"" + dish + "\";";
+        ResultSet resultSet = statement.executeQuery(select);
+        resultSet.next();
+        return resultSet.getString(1);
+    }
 }
