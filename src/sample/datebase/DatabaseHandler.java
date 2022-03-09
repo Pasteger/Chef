@@ -54,8 +54,8 @@ public class DatabaseHandler extends Configs{
 
         PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, User.getUsername());
-        preparedStatement.setString(2, User.getMenu().toString());
-        preparedStatement.setInt(3, User.getExpenses());
+        preparedStatement.setString(2, BillOfLading.menu.toString());
+        preparedStatement.setInt(3, BillOfLading.getExpenses());
 
         preparedStatement.executeUpdate();
     }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,11 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import sample.datebase.BillOfLading;
 import sample.datebase.DatabaseHandler;
 import sample.datebase.User;
 
 public class ControllerMenuFormation {
-    private int expenses;
     private int expensesFirstDishes;
     private int expensesSecondDishes;
     private int expensesThirdDishes;
@@ -27,30 +26,18 @@ public class ControllerMenuFormation {
     private final int priceThirdDishes = 200;
     private final int priceFourthDishes = 150;
     private final int priceFifthDishes = 300;
-    private StringBuilder menu;
-    private boolean firstDishesSet;
-    private boolean secondDishesSet;
-    private boolean thirdDishesSet;
-    private boolean fourthDishesSet;
-    private boolean fifthDishesSet;
-    private int countFirstDishesForOnePerson;
-    private int countSecondDishesForOnePerson;
-    private int countThirdDishesForOnePerson;
-    private int countFourthDishesForOnePerson;
-    private int countFifthDishesForOnePerson;
-    private int countPerson = 1;
+    @FXML private Label expensesLabel;
+    @FXML private Label menuLabel;
+    @FXML private Label productsLabel;
+    @FXML private Label countPersonLabel;
     @FXML private Button addDishesButton1;
     @FXML private Button addDishesButton2;
     @FXML private Button addDishesButton3;
     @FXML private Button addDishesButton4;
     @FXML private Button addDishesButton5;
     @FXML private Button addPersonButton;
-    @FXML private Label countPersonLabel;
     @FXML private Button exitButton;
-    @FXML private Label expensesLabel;
-    @FXML private Label menuLabel;
     @FXML private Button recipesButton;
-    @FXML private Button storeButton;
     @FXML private Button subtractDishesButton1;
     @FXML private Button subtractDishesButton2;
     @FXML private Button subtractDishesButton3;
@@ -58,397 +45,400 @@ public class ControllerMenuFormation {
     @FXML private Button subtractDishesButton5;
     @FXML private Button subtractPersonButton;
     @FXML private Button administratorButton;
+
     @FXML void initialize() {
-        expenses = User.getExpenses();
-        menu = User.getMenu();
+        expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+        menuLabel.setText(BillOfLading.menu.toString());
+        countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
         exitButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/authorization.fxml"));
         recipesButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/recipes.fxml"));
-        storeButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/store.fxml"));
         administratorButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/administrator_room.fxml"));
         addDishesButton1.setOnAction(actionEvent -> {
-            if(countFirstDishesForOnePerson < 100){
+            if(BillOfLading.getCountFirstDishesForOnePerson() < 100){
                 addDishes1();
             }
         });
         addDishesButton2.setOnAction(actionEvent -> {
-            if(countSecondDishesForOnePerson < 100) {
+            if(BillOfLading.getCountSecondDishesForOnePerson() < 100) {
                 addDishes2();
             }
         });
         addDishesButton3.setOnAction(actionEvent -> {
-            if(countThirdDishesForOnePerson < 100) {
+            if(BillOfLading.getCountThirdDishesForOnePerson() < 100) {
                 addDishes3();
             }
         });
         addDishesButton4.setOnAction(actionEvent -> {
-            if(countFourthDishesForOnePerson < 100) {
+            if(BillOfLading.getCountFourthDishesForOnePerson() < 100) {
                 addDishes4();
             }
         });
         addDishesButton5.setOnAction(actionEvent -> {
-            if(countFifthDishesForOnePerson < 100) {
+            if(BillOfLading.getCountFifthDishesForOnePerson() < 100) {
                 addDishes5();
             }
         });
 
         subtractDishesButton1.setOnAction(actionEvent -> {
-            if(countFirstDishesForOnePerson > 0){
+            if(BillOfLading.getCountFirstDishesForOnePerson() > 0){
                 subtractDishes1();
             }
         });
         subtractDishesButton2.setOnAction(actionEvent -> {
-            if(countSecondDishesForOnePerson > 0){
+            if(BillOfLading.getCountSecondDishesForOnePerson() > 0){
                 subtractDishes2();
             }
         });
         subtractDishesButton3.setOnAction(actionEvent -> {
-            if(countThirdDishesForOnePerson > 0){
+            if(BillOfLading.getCountThirdDishesForOnePerson() > 0){
                 subtractDishes3();
             }
         });
         subtractDishesButton4.setOnAction(actionEvent -> {
-            if(countFourthDishesForOnePerson > 0){
+            if(BillOfLading.getCountFourthDishesForOnePerson() > 0){
                 subtractDishes4();
             }
         });
         subtractDishesButton5.setOnAction(actionEvent -> {
-            if(countFifthDishesForOnePerson > 0){
+            if(BillOfLading.getCountFifthDishesForOnePerson() > 0){
                 subtractDishes5();
             }
         });
 
 
         addPersonButton.setOnAction(actionEvent -> {
-            if(countPerson < 100) {
-                countPerson++;
+            if(BillOfLading.getCountPerson() < 100) {
+                BillOfLading.incrementCountPerson();
             }
             processingPersonButton();
         });
         subtractPersonButton.setOnAction(actionEvent -> {
-            if(countPerson > 1) {
-                countPerson--;
+            if(BillOfLading.getCountPerson() > 1) {
+                BillOfLading.decrementCountPerson();
             }
             processingPersonButton();
         });
     }
 
     private void processingPersonButton(){
-        countPersonLabel.setText(String.valueOf(countPerson));
-        if(firstDishesSet){
-            countFirstDishesForOnePerson--;
+        countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
+        if(BillOfLading.isFirstDishesSet()){
+            BillOfLading.decrementCountFirstDishesForOnePerson();
             addDishes1();
         }
-        if(secondDishesSet){
-            countSecondDishesForOnePerson--;
+        if(BillOfLading.isSecondDishesSet()){
+            BillOfLading.decrementCountSecondDishesForOnePerson();
             addDishes2();
         }
-        if(thirdDishesSet){
-            countThirdDishesForOnePerson--;
+        if(BillOfLading.isThirdDishesSet()){
+            BillOfLading.decrementCountThirdDishesForOnePerson();
             addDishes3();
         }
-        if(fourthDishesSet){
-            countFourthDishesForOnePerson--;
+        if(BillOfLading.isFourthDishesSet()){
+            BillOfLading.decrementCountFourthDishesForOnePerson();
             addDishes4();
         }
-        if(fifthDishesSet){
-            countFifthDishesForOnePerson--;
+        if(BillOfLading.isFifthDishesSet()){
+            BillOfLading.decrementCountFifthDishesForOnePerson();
             addDishes5();
         }
     }
 
     private void addDishes1(){
         int countFirstDishes;
-        if(!firstDishesSet){
-            countFirstDishesForOnePerson = 1;
-            countFirstDishes = countFirstDishesForOnePerson * countPerson;
-            menu.append("Борщ - ").append(countFirstDishes).append("\n");
-            expensesFirstDishes = priceFirstDishes * countPerson;
-            firstDishesSet = true;
+        if(!BillOfLading.isFirstDishesSet()){
+            BillOfLading.setCountFirstDishesForOnePerson(1);
+            countFirstDishes = BillOfLading.getCountFirstDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.append("Борщ - ").append(countFirstDishes).append("\n");
+            expensesFirstDishes = priceFirstDishes * BillOfLading.getCountPerson();
+            BillOfLading.setFirstDishesSet(true);
         }
         else {
-            countFirstDishesForOnePerson++;
+            BillOfLading.incrementCountFirstDishesForOnePerson();
             Pattern pattern = Pattern.compile("Борщ - \\d+\n");
-            Matcher matcher = pattern.matcher(menu);
+            Matcher matcher = pattern.matcher(BillOfLading.menu);
             matcher.find();
             int start = matcher.start();
             int end = matcher.end();
-            countFirstDishes = countFirstDishesForOnePerson * countPerson;
-            menu.replace(start + 7, end-1, String.valueOf(countFirstDishes));
+            countFirstDishes = BillOfLading.getCountFirstDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.replace(start + 7, end-1, String.valueOf(countFirstDishes));
 
-            expenses -= expensesFirstDishes;
+            BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesFirstDishes);
             expensesFirstDishes = priceFirstDishes * countFirstDishes;
         }
-        expenses += expensesFirstDishes;
-        expensesLabel.setText(String.valueOf(expenses));
-        menuLabel.setText(menu.toString());
+        BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesFirstDishes);
+        expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+        menuLabel.setText(BillOfLading.menu.toString());
     }
 
     private void addDishes2(){
         int countSecondDishes;
-        if(!secondDishesSet){
-            countSecondDishesForOnePerson = 1;
-            countSecondDishes = countSecondDishesForOnePerson * countPerson;
-            menu.append("Плов - ").append(countSecondDishes).append("\n");
-            expensesSecondDishes = priceSecondDishes * countPerson;
-            secondDishesSet = true;
+        if(!BillOfLading.isSecondDishesSet()){
+            BillOfLading.setCountSecondDishesForOnePerson(1);
+            countSecondDishes = BillOfLading.getCountSecondDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.append("Плов - ").append(countSecondDishes).append("\n");
+            expensesSecondDishes = priceSecondDishes * BillOfLading.getCountPerson();
+            BillOfLading.setSecondDishesSet(true);
         }
         else {
-            countSecondDishesForOnePerson++;
+            BillOfLading.incrementCountSecondDishesForOnePerson();
             Pattern pattern = Pattern.compile("Плов - \\d+\n");
-            Matcher matcher = pattern.matcher(menu);
+            Matcher matcher = pattern.matcher(BillOfLading.menu);
             matcher.find();
             int start = matcher.start();
             int end = matcher.end();
-            countSecondDishes = countSecondDishesForOnePerson * countPerson;
-            menu.replace(start + 7, end-1, String.valueOf(countSecondDishes));
+            countSecondDishes = BillOfLading.getCountSecondDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.replace(start + 7, end-1, String.valueOf(countSecondDishes));
 
-            expenses -= expensesSecondDishes;
+            BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesSecondDishes);
             expensesSecondDishes = priceSecondDishes * countSecondDishes;
         }
-        expenses += expensesSecondDishes;
-        expensesLabel.setText(String.valueOf(expenses));
-        menuLabel.setText(menu.toString());
+        BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesSecondDishes);
+        expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+        menuLabel.setText(BillOfLading.menu.toString());
     }
 
     private void addDishes3(){
         int countThirdDishes;
-        if(!thirdDishesSet){
-            countThirdDishesForOnePerson = 1;
-            countThirdDishes = countThirdDishesForOnePerson * countPerson;
-            menu.append("Пельмени - ").append(countThirdDishes).append("\n");
-            expensesThirdDishes = priceThirdDishes * countPerson;
-            thirdDishesSet = true;
+        if(!BillOfLading.isThirdDishesSet()){
+            BillOfLading.setCountThirdDishesForOnePerson(1);
+            countThirdDishes = BillOfLading.getCountThirdDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.append("Пельмени - ").append(countThirdDishes).append("\n");
+            expensesThirdDishes = priceThirdDishes * BillOfLading.getCountPerson();
+            BillOfLading.setThirdDishesSet(true);
         }
         else {
-            countThirdDishesForOnePerson++;
+            BillOfLading.incrementCountThirdDishesForOnePerson();
             Pattern pattern = Pattern.compile("Пельмени - \\d+\n");
-            Matcher matcher = pattern.matcher(menu);
+            Matcher matcher = pattern.matcher(BillOfLading.menu);
             matcher.find();
             int start = matcher.start();
             int end = matcher.end();
-            countThirdDishes = countThirdDishesForOnePerson * countPerson;
-            menu.replace(start + 11, end-1, String.valueOf(countThirdDishes));
+            countThirdDishes = BillOfLading.getCountThirdDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.replace(start + 11, end-1, String.valueOf(countThirdDishes));
 
-            expenses -= expensesThirdDishes;
+            BillOfLading.setExpenses(BillOfLading.getExpenses() -  expensesThirdDishes);
             expensesThirdDishes = priceThirdDishes * countThirdDishes;
         }
-        expenses += expensesThirdDishes;
-        expensesLabel.setText(String.valueOf(expenses));
-        menuLabel.setText(menu.toString());
+        BillOfLading.setExpenses(BillOfLading.getExpenses() +  expensesThirdDishes);
+        expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+        menuLabel.setText(BillOfLading.menu.toString());
     }
 
     private void addDishes4(){
         int countFourthDishes;
-        if(!fourthDishesSet){
-            countFourthDishesForOnePerson = 1;
-            countFourthDishes = countFourthDishesForOnePerson * countPerson;
-            menu.append("Венегрет - ").append(countFourthDishes).append("\n");
-            expensesFourthDishes = priceFourthDishes * countPerson;
-            fourthDishesSet = true;
+        if(!BillOfLading.isFourthDishesSet()){
+            BillOfLading.setCountFourthDishesForOnePerson(1);
+            countFourthDishes = BillOfLading.getCountFourthDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.append("Венегрет - ").append(countFourthDishes).append("\n");
+            expensesFourthDishes = priceFourthDishes * BillOfLading.getCountPerson();
+            BillOfLading.setFourthDishesSet(true);
         }
         else {
-            countFourthDishesForOnePerson++;
+            BillOfLading.incrementCountFourthDishesForOnePerson();
             Pattern pattern = Pattern.compile("Венегрет - \\d+\n");
-            Matcher matcher = pattern.matcher(menu);
+            Matcher matcher = pattern.matcher(BillOfLading.menu);
             matcher.find();
             int start = matcher.start();
             int end = matcher.end();
-            countFourthDishes = countFourthDishesForOnePerson * countPerson;
-            menu.replace(start + 11, end-1, String.valueOf(countFourthDishes));
+            countFourthDishes = BillOfLading.getCountFourthDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.replace(start + 11, end-1, String.valueOf(countFourthDishes));
 
-            expenses -= expensesFourthDishes;
+            BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesFourthDishes);
             expensesFourthDishes = priceFourthDishes * countFourthDishes;
         }
-        expenses += expensesFourthDishes;
-        expensesLabel.setText(String.valueOf(expenses));
-        menuLabel.setText(menu.toString());
+        BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesFourthDishes);
+        expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+        menuLabel.setText(BillOfLading.menu.toString());
     }
 
     private void addDishes5(){
         int countFifthDishes;
-        if(!fifthDishesSet){
-            countFifthDishesForOnePerson = 1;
-            countFifthDishes = countFifthDishesForOnePerson * countPerson;
-            menu.append("Шаурма - ").append(countFifthDishes).append("\n");
-            expensesFifthDishes = priceFifthDishes * countPerson;
-            fifthDishesSet = true;
+        if(!BillOfLading.isFifthDishesSet()){
+            BillOfLading.setCountFifthDishesForOnePerson(1);
+            countFifthDishes = BillOfLading.getCountFifthDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.append("Шаурма - ").append(countFifthDishes).append("\n");
+            expensesFifthDishes = priceFifthDishes * BillOfLading.getCountPerson();
+            BillOfLading.setFifthDishesSet(true);
         }
         else {
-            countFifthDishesForOnePerson++;
+            BillOfLading.incrementCountFifthDishesForOnePerson();
             Pattern pattern = Pattern.compile("Шаурма - \\d+\n");
-            Matcher matcher = pattern.matcher(menu);
+            Matcher matcher = pattern.matcher(BillOfLading.menu);
             matcher.find();
             int start = matcher.start();
             int end = matcher.end();
-            countFifthDishes = countFifthDishesForOnePerson * countPerson;
-            menu.replace(start + 9, end-1, String.valueOf(countFifthDishes));
+            countFifthDishes = BillOfLading.getCountFifthDishesForOnePerson() * BillOfLading.getCountPerson();
+            BillOfLading.menu.replace(start + 9, end-1, String.valueOf(countFifthDishes));
 
-            expenses -= expensesFifthDishes;
+            BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesFifthDishes);
             expensesFifthDishes = priceFifthDishes * countFifthDishes;
         }
-        expenses += expensesFifthDishes;
-        expensesLabel.setText(String.valueOf(expenses));
-        menuLabel.setText(menu.toString());
+        BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesFifthDishes);
+        expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+        menuLabel.setText(BillOfLading.menu.toString());
     }
 
     private void subtractDishes1(){
         int countFirstDishes;
-        if(firstDishesSet) {
-            if (countFirstDishesForOnePerson == 1) {
+        if(BillOfLading.isFirstDishesSet()) {
+            if (BillOfLading.getCountFirstDishesForOnePerson() == 1) {
                 Pattern pattern = Pattern.compile("Борщ - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                menu.replace(start, end, "");
-                expensesFirstDishes = -priceFirstDishes * countPerson;
-                firstDishesSet = false;
+                BillOfLading.menu.replace(start, end, "");
+                expensesFirstDishes = -priceFirstDishes * BillOfLading.getCountPerson();
+                BillOfLading.setFirstDishesSet(false);
             } else {
-                countFirstDishesForOnePerson--;
+                BillOfLading.decrementCountFirstDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Борщ - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                countFirstDishes = countFirstDishesForOnePerson * countPerson;
-                menu.replace(start + 7, end - 1, String.valueOf(countFirstDishes));
+                countFirstDishes = BillOfLading.getCountFirstDishesForOnePerson() * BillOfLading.getCountPerson();
+                BillOfLading.menu.replace(start + 7, end - 1, String.valueOf(countFirstDishes));
 
-                expenses -= expensesFirstDishes;
+                BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesFirstDishes);
                 expensesFirstDishes = priceFirstDishes * countFirstDishes;
             }
-            expenses += expensesFirstDishes;
-            expensesLabel.setText(String.valueOf(expenses));
-            menuLabel.setText(menu.toString());
+            BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesFirstDishes);
+            expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+            menuLabel.setText(BillOfLading.menu.toString());
         }
     }
 
     private void subtractDishes2(){
         int countSecondDishes;
-        if(secondDishesSet) {
-            if (countSecondDishesForOnePerson == 1) {
+        if(BillOfLading.isSecondDishesSet()) {
+            if (BillOfLading.getCountSecondDishesForOnePerson() == 1) {
                 Pattern pattern = Pattern.compile("Плов - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                menu.replace(start, end, "");
-                expensesSecondDishes = -priceSecondDishes * countPerson;
-                secondDishesSet = false;
+                BillOfLading.menu.replace(start, end, "");
+                expensesSecondDishes = -priceSecondDishes * BillOfLading.getCountPerson();
+                BillOfLading.setSecondDishesSet(false);
             } else {
-                countSecondDishesForOnePerson--;
+                BillOfLading.decrementCountFirstDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Плов - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                countSecondDishes = countSecondDishesForOnePerson * countPerson;
-                menu.replace(start + 7, end - 1, String.valueOf(countSecondDishes));
+                countSecondDishes = BillOfLading.getCountSecondDishesForOnePerson() * BillOfLading.getCountPerson();
+                BillOfLading.menu.replace(start + 7, end - 1, String.valueOf(countSecondDishes));
 
-                expenses -= expensesSecondDishes;
+                BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesSecondDishes);
                 expensesSecondDishes = priceSecondDishes * countSecondDishes;
             }
-            expenses += expensesSecondDishes;
-            expensesLabel.setText(String.valueOf(expenses));
-            menuLabel.setText(menu.toString());
+            BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesSecondDishes);
+            expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+            menuLabel.setText(BillOfLading.menu.toString());
         }
     }
 
     private void subtractDishes3(){
         int countThirdDishes;
-        if(thirdDishesSet) {
-            if (countThirdDishesForOnePerson == 1) {
+        if(BillOfLading.isThirdDishesSet()) {
+            if (BillOfLading.getCountThirdDishesForOnePerson() == 1) {
                 Pattern pattern = Pattern.compile("Пельмени - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                menu.replace(start, end, "");
-                expensesThirdDishes = -priceThirdDishes * countPerson;
-                thirdDishesSet = false;
+                BillOfLading.menu.replace(start, end, "");
+                expensesThirdDishes = -priceThirdDishes * BillOfLading.getCountPerson();
+                BillOfLading.setThirdDishesSet(false);
             } else {
-                countThirdDishesForOnePerson--;
+                BillOfLading.decrementCountThirdDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Пельмени - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                countThirdDishes = countThirdDishesForOnePerson * countPerson;
-                menu.replace(start + 11, end - 1, String.valueOf(countThirdDishes));
+                countThirdDishes = BillOfLading.getCountThirdDishesForOnePerson() * BillOfLading.getCountPerson();
+                BillOfLading.menu.replace(start + 11, end - 1, String.valueOf(countThirdDishes));
 
-                expenses -= expensesThirdDishes;
+                BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesThirdDishes);
                 expensesThirdDishes = priceThirdDishes * countThirdDishes;
             }
-            expenses += expensesThirdDishes;
-            expensesLabel.setText(String.valueOf(expenses));
-            menuLabel.setText(menu.toString());
+            BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesThirdDishes);
+            expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+            menuLabel.setText(BillOfLading.menu.toString());
         }
     }
 
     private void subtractDishes4(){
         int countFourthDishes;
-        if(fourthDishesSet) {
-            if (countFourthDishesForOnePerson == 1) {
+        if(BillOfLading.isFourthDishesSet()) {
+            if (BillOfLading.getCountFourthDishesForOnePerson() == 1) {
                 Pattern pattern = Pattern.compile("Венегрет - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                menu.replace(start, end, "");
-                expensesFourthDishes = -priceFourthDishes * countPerson;
-                fourthDishesSet = false;
+                BillOfLading.menu.replace(start, end, "");
+                expensesFourthDishes = -priceFourthDishes * BillOfLading.getCountPerson();
+                BillOfLading.setFourthDishesSet(false);
             } else {
-                countFourthDishesForOnePerson--;
+                BillOfLading.decrementCountFourthDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Венегрет - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                countFourthDishes = countFourthDishesForOnePerson * countPerson;
-                menu.replace(start + 11, end - 1, String.valueOf(countFourthDishes));
+                countFourthDishes = BillOfLading.getCountFourthDishesForOnePerson() * BillOfLading.getCountPerson();
+                BillOfLading.menu.replace(start + 11, end - 1, String.valueOf(countFourthDishes));
 
-                expenses -= expensesFourthDishes;
+                BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesFourthDishes);
                 expensesFourthDishes = priceFourthDishes * countFourthDishes;
             }
-            expenses += expensesFourthDishes;
-            expensesLabel.setText(String.valueOf(expenses));
-            menuLabel.setText(menu.toString());
+            BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesFourthDishes);
+            expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+            menuLabel.setText(BillOfLading.menu.toString());
         }
     }
 
     private void subtractDishes5(){
         int countFifthDishes;
-        if(fifthDishesSet) {
-            if (countFifthDishesForOnePerson == 1) {
+        if(BillOfLading.isFifthDishesSet()) {
+            if (BillOfLading.getCountFifthDishesForOnePerson() == 1) {
                 Pattern pattern = Pattern.compile("Шаурма - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                menu.replace(start, end, "");
-                expensesFifthDishes = -priceFifthDishes * countPerson;
-                fifthDishesSet = false;
+                BillOfLading.menu.replace(start, end, "");
+                expensesFifthDishes = -priceFifthDishes * BillOfLading.getCountPerson();
+                BillOfLading.setFifthDishesSet(false);
             } else {
-                countFifthDishesForOnePerson--;
+                BillOfLading.decrementCountFifthDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Шаурма - \\d+\n");
-                Matcher matcher = pattern.matcher(menu);
+                Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
                 int start = matcher.start();
                 int end = matcher.end();
-                countFifthDishes = countFifthDishesForOnePerson * countPerson;
-                menu.replace(start + 9, end - 1, String.valueOf(countFifthDishes));
+                countFifthDishes = BillOfLading.getCountFifthDishesForOnePerson() * BillOfLading.getCountPerson();
+                BillOfLading.menu.replace(start + 9, end - 1, String.valueOf(countFifthDishes));
 
-                expenses -= expensesFifthDishes;
+                BillOfLading.setExpenses(BillOfLading.getExpenses() - expensesFifthDishes);
                 expensesFifthDishes = priceFifthDishes * countFifthDishes;
             }
-            expenses += expensesFifthDishes;
-            expensesLabel.setText(String.valueOf(expenses));
-            menuLabel.setText(menu.toString());
+            BillOfLading.setExpenses(BillOfLading.getExpenses() + expensesFifthDishes);
+            expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
+            menuLabel.setText(BillOfLading.menu.toString());
         }
     }
 
+    private void calculateProducts(){
+
+    }
+
     private void openOtherWindow(String window){
-        User.setExpenses(expenses);
-        User.setMenu(menu);
         if(window.equals("/sample/layout/administrator_room.fxml")){
             if(!User.isAdministrator()){
                 return;
@@ -457,6 +447,7 @@ public class ControllerMenuFormation {
         if(window.equals("/sample/layout/authorization.fxml")){
             try {new DatabaseHandler().writeToHistory();}
             catch (SQLException | ClassNotFoundException throwable){throwable.printStackTrace();}
+            BillOfLading.update();
         }
         exitButton.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();

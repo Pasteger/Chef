@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.datebase.BillOfLading;
 import sample.datebase.DatabaseHandler;
 import sample.datebase.User;
 
@@ -51,17 +52,14 @@ public class ControllerAuthorization {
         DatabaseHandler databaseHandler = new DatabaseHandler();
         User.setUsername(login);
         User.setPassword(password);
-        User.setMenu(new StringBuilder());
-        User.setExpenses(0);
+        BillOfLading.menu = new StringBuilder();
+        BillOfLading.setExpenses(0);
         ResultSet resultSet = databaseHandler.signInUser();
-        int counter = 0;
-        while (resultSet.next()){
-            counter++;
-        }
-        return counter >= 1;
+        return resultSet.next();
     }
 
     private void openOtherWindow(String window){
+        BillOfLading.update();
         buttonRegistration.getScene().getWindow().hide();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(window));
