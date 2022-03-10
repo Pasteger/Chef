@@ -27,6 +27,21 @@ public class BillOfLading {
     public static Map<String, Integer> products = new HashMap<>();
     public static final ArrayList<String> productsArray = new ArrayList<>();
 
+    public BillOfLading(){
+        productsArray.add("Морковь");
+        productsArray.add("Мясо");
+        productsArray.add("Лук");
+        productsArray.add("Свекла");
+        productsArray.add("Капуста");
+        productsArray.add("Рис");
+        productsArray.add("Мука");
+        productsArray.add("Картошка");
+        productsArray.add("Яблоко");
+        productsArray.add("Горох");
+        productsArray.add("Огурец");
+        productsArray.add("Помидор");
+    }
+
     public static int getExpenses() {return expenses;}
     public static void setExpenses(int expenses) {BillOfLading.expenses = expenses;}
     public static int getCountPerson() {return countPerson;}
@@ -77,20 +92,7 @@ public class BillOfLading {
         countThirdDishesForOnePerson = 0;
         countFourthDishesForOnePerson = 0;
         countFifthDishesForOnePerson = 0;
-
-        productsArray.add("Морковь");
-        productsArray.add("Мясо");
-        productsArray.add("Лук");
-        productsArray.add("Свекла");
-        productsArray.add("Капуста");
-        productsArray.add("Рис");
-        productsArray.add("Мука");
-        productsArray.add("Картошка");
-        productsArray.add("Яблоко");
-        productsArray.add("Горох");
-        productsArray.add("Огурец");
-        productsArray.add("Помидор");
-
+        
         for(String product : productsArray){
             productForFirstDish.put(product, 0);
             productForSecondDish.put(product, 0);
