@@ -25,7 +25,7 @@
             <Font name="Arial" size="8.0" />
          </font>
       </Button>
-      <TableView fx:id="usersTable" layoutX="150.0" layoutY="192.0" prefHeight="329.0" prefWidth="330.0">
+      <TableView fx:id="usersTable" layoutX="150.0" layoutY="207.0" prefHeight="329.0" prefWidth="330.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="20.0" text="ID" />
           <TableColumn fx:id="usernameColumn" prefWidth="102.0" text="Username" />
@@ -33,7 +33,7 @@
             <TableColumn fx:id="isAdministratorColumn" minWidth="0.0" prefWidth="95.0" text="isAdministrator" />
         </columns>
       </TableView>
-      <TableView fx:id="historyTable" layoutX="492.0" layoutY="192.0" prefHeight="329.0" prefWidth="294.0">
+      <TableView fx:id="historyTable" layoutX="492.0" layoutY="207.0" prefHeight="329.0" prefWidth="294.0">
          <columns>
             <TableColumn fx:id="historyUsername" prefWidth="101.0" text="Пользователь" />
             <TableColumn fx:id="historyMenu" prefWidth="103.0" text="Меню" />
@@ -65,7 +65,7 @@
             <Font name="Arial" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="clearHistoryButton" layoutX="677.0" layoutY="527.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" style="-fx-background-color: #e28b00;" text="очистить историю" textFill="WHITE">
+      <Button fx:id="clearHistoryButton" layoutX="677.0" layoutY="542.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="109.0" style="-fx-background-color: #e28b00;" text="очистить историю" textFill="WHITE">
          <font>
             <Font name="Arial" size="11.0" />
          </font>
@@ -73,6 +73,16 @@
       <Label fx:id="exceptionLabel" alignment="CENTER" layoutX="14.0" layoutY="357.0" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: f0fff0;" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="usersTableTitle" alignment="CENTER" layoutX="150.0" layoutY="192.0" prefHeight="15.0" prefWidth="330.0" style="-fx-background-color: #e28b00;" text="пользователи" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="historyTableTitle" alignment="CENTER" layoutX="492.0" layoutY="192.0" prefHeight="15.0" prefWidth="294.0" style="-fx-background-color: #e28b00;" text="История" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Arial" size="12.0" />
          </font>
       </Label>
    </AnchorPane>
