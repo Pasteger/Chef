@@ -50,6 +50,7 @@ public class ControllerMenuFormation {
         expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
         menuLabel.setText(BillOfLading.menu.toString());
         countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
+
         BillOfLading.productsList = new StringBuilder();
         for (String product : BillOfLading.productsArray) {
             if (BillOfLading.products.get(product) != 0) {
@@ -57,6 +58,8 @@ public class ControllerMenuFormation {
             }
         }
         productsLabel.setText(BillOfLading.productsList.toString());
+        BillOfLading.productsList = new StringBuilder();
+
         exitButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/authorization.fxml"));
         recipesButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/recipes.fxml"));
         administratorButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/administrator_room.fxml"));
