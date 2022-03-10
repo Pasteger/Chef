@@ -1,4 +1,4 @@
-package sample.datebase;
+package sample.database;
 
 public class User {
     private static String username;

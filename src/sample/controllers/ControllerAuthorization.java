@@ -11,9 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sample.datebase.BillOfLading;
-import sample.datebase.DatabaseHandler;
-import sample.datebase.User;
+import sample.database.BillOfLading;
+import sample.database.DatabaseHandler;
+import sample.database.User;
 
 public class ControllerAuthorization {
     @FXML private Button buttonAuthorization;

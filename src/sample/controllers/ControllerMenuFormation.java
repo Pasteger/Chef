@@ -11,9 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import sample.datebase.BillOfLading;
-import sample.datebase.DatabaseHandler;
-import sample.datebase.User;
+import sample.database.BillOfLading;
+import sample.database.DatabaseHandler;
+import sample.database.User;
 
 public class ControllerMenuFormation {
     private int expensesFirstDishes;
@@ -50,6 +50,13 @@ public class ControllerMenuFormation {
         expensesLabel.setText(String.valueOf(BillOfLading.getExpenses()));
         menuLabel.setText(BillOfLading.menu.toString());
         countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
+        BillOfLading.productsList = new StringBuilder();
+        for (String product : BillOfLading.productsArray) {
+            if (BillOfLading.products.get(product) != 0) {
+                BillOfLading.productsList.append(product).append(" - ").append(BillOfLading.products.get(product)).append("\n");
+            }
+        }
+        productsLabel.setText(BillOfLading.productsList.toString());
         exitButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/authorization.fxml"));
         recipesButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/recipes.fxml"));
         administratorButton.setOnAction(actionEvent -> openOtherWindow("/sample/layout/administrator_room.fxml"));
@@ -57,92 +64,79 @@ public class ControllerMenuFormation {
             if(BillOfLading.getCountFirstDishesForOnePerson() < 100){
                 addDishes1();
             }
+            calculateProducts();
         });
         addDishesButton2.setOnAction(actionEvent -> {
             if(BillOfLading.getCountSecondDishesForOnePerson() < 100) {
                 addDishes2();
             }
+            calculateProducts();
         });
         addDishesButton3.setOnAction(actionEvent -> {
             if(BillOfLading.getCountThirdDishesForOnePerson() < 100) {
                 addDishes3();
             }
+            calculateProducts();
         });
         addDishesButton4.setOnAction(actionEvent -> {
             if(BillOfLading.getCountFourthDishesForOnePerson() < 100) {
                 addDishes4();
             }
+            calculateProducts();
         });
         addDishesButton5.setOnAction(actionEvent -> {
             if(BillOfLading.getCountFifthDishesForOnePerson() < 100) {
                 addDishes5();
             }
+            calculateProducts();
         });
 
         subtractDishesButton1.setOnAction(actionEvent -> {
             if(BillOfLading.getCountFirstDishesForOnePerson() > 0){
                 subtractDishes1();
             }
+            calculateProducts();
         });
         subtractDishesButton2.setOnAction(actionEvent -> {
             if(BillOfLading.getCountSecondDishesForOnePerson() > 0){
                 subtractDishes2();
             }
+            calculateProducts();
         });
         subtractDishesButton3.setOnAction(actionEvent -> {
             if(BillOfLading.getCountThirdDishesForOnePerson() > 0){
                 subtractDishes3();
             }
+            calculateProducts();
         });
         subtractDishesButton4.setOnAction(actionEvent -> {
             if(BillOfLading.getCountFourthDishesForOnePerson() > 0){
                 subtractDishes4();
             }
+            calculateProducts();
         });
         subtractDishesButton5.setOnAction(actionEvent -> {
             if(BillOfLading.getCountFifthDishesForOnePerson() > 0){
                 subtractDishes5();
             }
+            calculateProducts();
         });
 
 
         addPersonButton.setOnAction(actionEvent -> {
             if(BillOfLading.getCountPerson() < 100) {
                 BillOfLading.incrementCountPerson();
+                countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
             }
-            processingPersonButton();
         });
         subtractPersonButton.setOnAction(actionEvent -> {
             if(BillOfLading.getCountPerson() > 1) {
                 BillOfLading.decrementCountPerson();
+                countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
             }
-            processingPersonButton();
         });
     }
 
-    private void processingPersonButton(){
-        countPersonLabel.setText(String.valueOf(BillOfLading.getCountPerson()));
-        if(BillOfLading.isFirstDishesSet()){
-            BillOfLading.decrementCountFirstDishesForOnePerson();
-            addDishes1();
-        }
-        if(BillOfLading.isSecondDishesSet()){
-            BillOfLading.decrementCountSecondDishesForOnePerson();
-            addDishes2();
-        }
-        if(BillOfLading.isThirdDishesSet()){
-            BillOfLading.decrementCountThirdDishesForOnePerson();
-            addDishes3();
-        }
-        if(BillOfLading.isFourthDishesSet()){
-            BillOfLading.decrementCountFourthDishesForOnePerson();
-            addDishes4();
-        }
-        if(BillOfLading.isFifthDishesSet()){
-            BillOfLading.decrementCountFifthDishesForOnePerson();
-            addDishes5();
-        }
-    }
 
     private void addDishes1(){
         int countFirstDishes;
@@ -291,6 +285,7 @@ public class ControllerMenuFormation {
                 BillOfLading.menu.replace(start, end, "");
                 expensesFirstDishes = -priceFirstDishes * BillOfLading.getCountPerson();
                 BillOfLading.setFirstDishesSet(false);
+                BillOfLading.setCountFirstDishesForOnePerson(0);
             } else {
                 BillOfLading.decrementCountFirstDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Борщ - \\d+\n");
@@ -322,8 +317,9 @@ public class ControllerMenuFormation {
                 BillOfLading.menu.replace(start, end, "");
                 expensesSecondDishes = -priceSecondDishes * BillOfLading.getCountPerson();
                 BillOfLading.setSecondDishesSet(false);
+                BillOfLading.setCountSecondDishesForOnePerson(0);
             } else {
-                BillOfLading.decrementCountFirstDishesForOnePerson();
+                BillOfLading.decrementCountSecondDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Плов - \\d+\n");
                 Matcher matcher = pattern.matcher(BillOfLading.menu);
                 matcher.find();
@@ -353,6 +349,7 @@ public class ControllerMenuFormation {
                 BillOfLading.menu.replace(start, end, "");
                 expensesThirdDishes = -priceThirdDishes * BillOfLading.getCountPerson();
                 BillOfLading.setThirdDishesSet(false);
+                BillOfLading.setCountThirdDishesForOnePerson(0);
             } else {
                 BillOfLading.decrementCountThirdDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Пельмени - \\d+\n");
@@ -384,6 +381,7 @@ public class ControllerMenuFormation {
                 BillOfLading.menu.replace(start, end, "");
                 expensesFourthDishes = -priceFourthDishes * BillOfLading.getCountPerson();
                 BillOfLading.setFourthDishesSet(false);
+                BillOfLading.setCountFourthDishesForOnePerson(0);
             } else {
                 BillOfLading.decrementCountFourthDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Венегрет - \\d+\n");
@@ -415,6 +413,7 @@ public class ControllerMenuFormation {
                 BillOfLading.menu.replace(start, end, "");
                 expensesFifthDishes = -priceFifthDishes * BillOfLading.getCountPerson();
                 BillOfLading.setFifthDishesSet(false);
+                BillOfLading.setCountFifthDishesForOnePerson(0);
             } else {
                 BillOfLading.decrementCountFifthDishesForOnePerson();
                 Pattern pattern = Pattern.compile("Шаурма - \\d+\n");
@@ -434,8 +433,38 @@ public class ControllerMenuFormation {
         }
     }
 
-    private void calculateProducts(){
+    private void calculateProducts() {
+        int countFirstDish = BillOfLading.getCountFirstDishesForOnePerson() * BillOfLading.getCountPerson();
+        int countSecondDish = BillOfLading.getCountSecondDishesForOnePerson() * BillOfLading.getCountPerson();
+        int countThirdDish = BillOfLading.getCountThirdDishesForOnePerson() * BillOfLading.getCountPerson();
+        int countFourthDish = BillOfLading.getCountFourthDishesForOnePerson() * BillOfLading.getCountPerson();
+        int countFifthDish = BillOfLading.getCountFifthDishesForOnePerson() * BillOfLading.getCountPerson();
+        int countProductForFirstDish;
+        int countProductForSecondDish;
+        int countProductForThirdDish;
+        int countProductForFourthDish;
+        int countProductForFifthDish;
 
+        for (String product : BillOfLading.productsArray) {
+            countProductForFirstDish = BillOfLading.productForFirstDish.get(product) * countFirstDish;
+            countProductForSecondDish = BillOfLading.productForSecondDish.get(product) * countSecondDish;
+            countProductForThirdDish = BillOfLading.productForThirdDish.get(product) * countThirdDish;
+            countProductForFourthDish = BillOfLading.productForFourthDish.get(product) * countFourthDish;
+            countProductForFifthDish = BillOfLading.productForFifthDish.get(product) * countFifthDish;
+
+            int commonCountProduct = countProductForFirstDish + countProductForSecondDish + countProductForThirdDish + countProductForFourthDish + countProductForFifthDish;
+
+            BillOfLading.products.put(product, commonCountProduct);
+        }
+
+
+        BillOfLading.productsList = new StringBuilder();
+        for (String product : BillOfLading.productsArray) {
+            if (BillOfLading.products.get(product) != 0) {
+                BillOfLading.productsList.append(product).append(" - ").append(BillOfLading.products.get(product)).append("\n");
+            }
+        }
+        productsLabel.setText(BillOfLading.productsList.toString());
     }
 
     private void openOtherWindow(String window){

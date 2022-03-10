@@ -1,4 +1,4 @@
-package sample.datebase;
+package sample.database;
 
 public class UsersData {
     private int id;

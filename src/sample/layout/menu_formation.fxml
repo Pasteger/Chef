@@ -152,14 +152,14 @@
             <Font name="Arial" size="9.0" />
          </font>
       </Button>
-      <Label fx:id="productsTitle" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="170.0" prefHeight="211.0" prefWidth="189.0" style="-fx-background-color: #e28b00;" text="продукты" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="productsTitle" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="14.0" layoutY="170.0" prefHeight="343.0" prefWidth="189.0" style="-fx-background-color: #e28b00;" text="продукты" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Arial" size="36.0" />
          </font>
       </Label>
-      <Label fx:id="productsLabel" alignment="CENTER" layoutX="22.0" layoutY="226.0" prefHeight="145.0" prefWidth="174.0" style="-fx-background-color: f0fff0;" textAlignment="CENTER">
+      <Label fx:id="productsLabel" alignment="TOP_LEFT" layoutX="22.0" layoutY="226.0" prefHeight="278.0" prefWidth="174.0" style="-fx-background-color: f0fff0;">
          <font>
-            <Font name="Arial" size="20.0" />
+            <Font name="Arial" size="14.0" />
          </font>
       </Label>
    </AnchorPane>

@@ -1,9 +1,14 @@
-package sample.datebase;
+package sample.database;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BillOfLading {
     private static int expenses;
     private static int countPerson = 1;
     public static StringBuilder menu = new StringBuilder();
+    public static StringBuilder productsList;
     private static boolean firstDishesSet;
     private static boolean secondDishesSet;
     private static boolean thirdDishesSet;
@@ -14,6 +19,13 @@ public class BillOfLading {
     private static int countThirdDishesForOnePerson;
     private static int countFourthDishesForOnePerson;
     private static int countFifthDishesForOnePerson;
+    public static final Map<String, Integer> productForFirstDish = new HashMap<>();
+    public static final Map<String, Integer> productForSecondDish = new HashMap<>();
+    public static final Map<String, Integer> productForThirdDish = new HashMap<>();
+    public static final Map<String, Integer> productForFourthDish = new HashMap<>();
+    public static final Map<String, Integer> productForFifthDish = new HashMap<>();
+    public static Map<String, Integer> products = new HashMap<>();
+    public static final ArrayList<String> productsArray = new ArrayList<>();
 
     public static int getExpenses() {return expenses;}
     public static void setExpenses(int expenses) {BillOfLading.expenses = expenses;}
@@ -51,6 +63,7 @@ public class BillOfLading {
     public static void incrementCountFifthDishesForOnePerson(){countFifthDishesForOnePerson++;}
     public static void decrementCountFifthDishesForOnePerson(){countFifthDishesForOnePerson--;}
     public static void update(){
+        products = new HashMap<>();
         expenses = 0;
         countPerson = 1;
         menu = new StringBuilder();
@@ -64,5 +77,56 @@ public class BillOfLading {
         countThirdDishesForOnePerson = 0;
         countFourthDishesForOnePerson = 0;
         countFifthDishesForOnePerson = 0;
+
+        productsArray.add("Морковь");
+        productsArray.add("Мясо");
+        productsArray.add("Лук");
+        productsArray.add("Свекла");
+        productsArray.add("Капуста");
+        productsArray.add("Рис");
+        productsArray.add("Мука");
+        productsArray.add("Картошка");
+        productsArray.add("Яблоко");
+        productsArray.add("Горох");
+        productsArray.add("Огурец");
+        productsArray.add("Помидор");
+
+        for(String product : productsArray){
+            productForFirstDish.put(product, 0);
+            productForSecondDish.put(product, 0);
+            productForThirdDish.put(product, 0);
+            productForFourthDish.put(product, 0);
+            productForFifthDish.put(product, 0);
+            products.put(product, 0);
+        }
+
+        productForFirstDish.put("Морковь", 2);
+        productForFirstDish.put("Мясо", 1);
+        productForFirstDish.put("Лук", 2);
+        productForFirstDish.put("Свекла", 2);
+        productForFirstDish.put("Капуста", 1);
+
+        productForSecondDish.put("Морковь", 1);
+        productForSecondDish.put("Мясо", 2);
+        productForSecondDish.put("Рис", 3);
+        productForSecondDish.put("Лук", 1);
+
+        productForThirdDish.put("Мука", 2);
+        productForThirdDish.put("Мясо", 3);
+
+        productForFourthDish.put("Свекла", 2);
+        productForFourthDish.put("Картошка", 2);
+        productForFourthDish.put("Морковь", 2);
+        productForFourthDish.put("Яблоко", 1);
+        productForFourthDish.put("Горох", 4);
+        productForFourthDish.put("Огурец", 2);
+
+        productForFifthDish.put("Картошка", 1);
+        productForFifthDish.put("Мясо", 1);
+        productForFifthDish.put("Морковь", 1);
+        productForFifthDish.put("Огурец", 1);
+        productForFifthDish.put("Мука", 1);
+        productForFifthDish.put("Помидор", 1);
+        productForFifthDish.put("Капуста", 1);
     }
 }

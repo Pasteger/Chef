@@ -1,8 +1,7 @@
-package sample.datebase;
+package sample.database;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.*;
 
 public class DatabaseHandler extends Configs{

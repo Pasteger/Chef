@@ -7,6 +7,6 @@ module CourseProject {
 
 
     opens sample.controllers;
-    opens sample.datebase;
+    opens sample.database;
     opens sample;
 }

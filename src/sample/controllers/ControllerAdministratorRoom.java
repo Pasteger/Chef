@@ -8,9 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import sample.datebase.Const;
-import sample.datebase.DatabaseHandler;
-import sample.datebase.UsersData;
+import sample.database.Const;
+import sample.database.DatabaseHandler;
+import sample.database.UsersData;
 import java.io.IOException;
 import java.sql.SQLException;
 
